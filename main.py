@@ -13,7 +13,7 @@ from termcolor import colored
 """
 Usage example of this tool:
 ./main.py -w wordlist.txt http://10.10.10.248/documents/ -n jpg -d output 
-./main.py --date-generator http://10.10.10.248/documents/ -n pdf -d output
+./main.py --generator intelligence http://10.10.10.248/documents/ -n pdf -d output --data "2020-01-01 2022-12-31 -output"
 """
 
 
@@ -67,6 +67,10 @@ def wordlist_downloader(url: str, wlist: Union[str, list], headers: dict = {}, e
 
 
 def load_plugin(name):
+    """
+
+    :param name:
+    """
     return importlib.import_module(f"plugins.{name}", ".").run
 
 
