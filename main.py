@@ -30,9 +30,6 @@ def get_req(url: str, headers: dict, directory: str, fname: str) -> None:
     res = req.get(url, headers=headers)
     if res.status_code == 200:
         print(colored(f"url: {url}", "green"))
-        # create output directory if necessary
-        if directory != "" and not os.path.exists(directory):
-            os.mkdir(directory)
         # save document to file
         with open(os.path.join(directory, fname), "wb") as f2:
             f2.write(res.content)
@@ -55,8 +52,8 @@ def wordlist_downloader(url: str, wlist: Union[str, list], headers: dict = {}, e
             for word in f:
                 for extension in extensions:
                     # add extensions to word and build a proper url and request it via get method
-                    fname = f"{word}.{extension}"
-                    url2 = urljoin(url, fname)
+                    fname = f"{word.strip()}.{extension.strip()}"
+                    url2 = urljoin(url.strip(), fname)
                     get_req(url2, headers, directory, fname)
     elif type(wlist) == list:
         for word in wlist:
@@ -94,6 +91,10 @@ if __name__ == '__main__':
         wordlist = run(args.data)
         if wordlist is None:
             print(f"Error on loading plugin {args.generator} and run \"run\"", file=sys.stderr)
+
+    
+    if args.directory and not os.path.exists(args.directory):
+        os.mkdir(args.directory)
 
     # argument logic
     if args.url:
